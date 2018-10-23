@@ -169,7 +169,7 @@ int main(int argc, char *argv[]){
         exit(-1);    
     } 
 
-    int clockIncrement = 0;
+    int clockIncrement = 0, numberRunning = 0;
     //Parent main loop.
     do {
         clockIncrement = 0;
@@ -179,9 +179,10 @@ int main(int argc, char *argv[]){
                 clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
             }
 
-        if (((rand() % (10)) + 1) <= 75){
+        if (((rand() % (10)) + 1) <= 75 && numberRunning < 18){
             iteration += 1;
             clockptr->numChildren += 1;
+            numberRunning += 1;
             processBlock newBlock = {.childPid = (pid_t)(getpid()+iteration), .usageTime = 0, .waitTimeNSec = 0};
             if (((rand() % (100)) + 1) >= 85){
                 newBlock.priority = 0;
@@ -317,21 +318,16 @@ int main(int argc, char *argv[]){
                 }
             }
             else if (clockptr->childOption >= 91 && clockptr->childOption <= 100){
-                float value = 0.0;
                 percentage = (rand() % (99)) + 1;
-                value = (float)percentage;
-                fprintf(stderr, "value: %f", value);
                 fprintf(logPtr, "OSS : %ld : %d%% of quantum used\n", 
                         (long)clockptr->currentlyRunning, (int)percentage);
                 if (clockptr->runningPriority == 0){
-                    clockIncrement = (int)((value*500000.00)/100.0);
-                    fprintf(stderr, "increment: %d\n", clockIncrement);
+                    clockIncrement = (int)((percentage*500000.00)/100.0);
                     highPriority->array[highPriority->front].waitTimeNSec = 100000;
                     enqueue(blocked, *(dequeue(highPriority)));
                 }
                 else {
-                    clockIncrement = (int)((value*1000000.00)/100.0);
-                    fprintf(stderr, "increment: %d\n", clockIncrement);
+                    clockIncrement = (int)((percentage*1000000.00)/100.0);
                     lowPriority->array[lowPriority->front].waitTimeNSec = 100000;
                     enqueue(blocked, *(dequeue(lowPriority)));
                 }
@@ -352,7 +348,12 @@ int main(int argc, char *argv[]){
         clockptr->readyFlag = 0;
 
 
-    } while (flag == 0 && iteration < 20);
+    } while (flag == 0 && iteration < 50);
+
+    fprintf(stderr, "Total Usage time: %d ns\n", clockptr->totalUsage);
+    fprintf(stderr, "Total Idle time: %d ns\n", clockptr->totalIdle);
+    fprintf(stderr, "Average Usage time: %d ns\n", clockptr->totalUsage/clockptr->numChildren);
+    fprintf(stderr, "Average Idle time: %d ns\n", clockptr->totalIdle/clockptr->numChildren);
 
     //Sending signal to all children
     if (flag == 1) {
