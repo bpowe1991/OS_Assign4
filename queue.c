@@ -36,22 +36,22 @@ void enqueue(queue* currentQueue, processBlock item){
 
 // Function to remove an item from queue.  
 // It changes front and size 
-processBlock dequeue(queue* currentQueue) 
+processBlock* dequeue(queue* currentQueue) 
 { 
-    processBlock empty = {.childPid = 0};
+    processBlock* empty = NULL;
     if (isEmpty(currentQueue)) 
         return empty; 
-    processBlock item = currentQueue->array[currentQueue->front]; 
+    processBlock* item = &currentQueue->array[currentQueue->front]; 
     currentQueue->front = (currentQueue->front + 1)%currentQueue->capacity; 
     currentQueue->size = currentQueue->size - 1; 
     return item; 
 } 
 
 // Function to get front of queue 
-processBlock front(queue* currentQueue) 
+processBlock* front(queue* currentQueue) 
 { 
-    processBlock empty = {.childPid = 0};
+    processBlock* empty = NULL;
     if (isEmpty(currentQueue)) 
         return empty; 
-    return currentQueue->array[currentQueue->front]; 
+    return &currentQueue->array[currentQueue->front]; 
 } 

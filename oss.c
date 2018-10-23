@@ -137,8 +137,11 @@ fprintf(stderr, "%d\n", isFull(lowPriority));
 fprintf(stderr, "%d\n", isEmpty(lowPriority));
 
 for(int x = 0; x < 5; x++){
-    fprintf(stderr, "%ld\n", (long)front(lowPriority).childPid);
-    dequeue(lowPriority);
+    if (front(lowPriority) != NULL){
+        fprintf(stderr, "%ld\n", (long)front(lowPriority)->childPid);
+        dequeue(lowPriority);
+    }
+    else{fprintf(stderr, "Queue is empty!\n");}
 }
 
 //     //Checking if m, s, and t have valid integer values.
