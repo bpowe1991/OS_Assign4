@@ -6,23 +6,24 @@
 //Stucture of process control block.
 typedef struct processBlock {
     pid_t childPid;
-    int readyFlag;
     int usageTime;
-    int waitTime;
+    int waitTimeNSec;
     int priority;
 } processBlock;
 
 //Structure to be used in shared memory.
-typedef struct clock {
+typedef struct Oss_clock {
     pid_t currentlyRunning;
     int readyFlag;
+    int runningPriority;
     int sec;
     int nanoSec;
     int childOption;
     int totalUsage;
-    int totalIdle;
+    int totalWait;
     int numChildren;
-} clock;
+    int totalIdle;
+} oss_clock;
 
 //Queue structure.
 typedef struct queue 

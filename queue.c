@@ -31,7 +31,6 @@ void enqueue(queue* currentQueue, processBlock item){
     currentQueue->rear = (currentQueue->rear + 1)%currentQueue->capacity; 
     currentQueue->array[currentQueue->rear] = item; 
     currentQueue->size = currentQueue->size + 1; 
-    fprintf(stderr, "%ld enqueued to queue\n", (long) item.childPid); 
 } 
 
 // Function to remove an item from queue.  

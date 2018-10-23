@@ -16,6 +16,7 @@ values in shared memory and deallocates the shared memory segment.
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/ipc.h> 
@@ -37,14 +38,21 @@ int main(int argc, char *argv[]){
     signal(SIGALRM, alarmHandler);
     signal(SIGQUIT, SIG_IGN);
 
-    struct clock *clockptr;
+    struct Oss_clock *clockptr;
     char filename[20] = "log.txt";
-    int opt, s = 10, t = 2, shmid, status = 0;
+    int opt, s = 10, t = 2, shmid, status = 0, iteration = 0;
+    double percentage = 0.0;
     key_t key = 3670407;
 	pid_t childpid = 0, wpid;
     FILE *logPtr;
     sem_t *mutex;
     parent = getpid();
+    srand(time(0));
+    
+    //Setting queues for oss.
+    queue* lowPriority = createQueue(18);
+    queue* highPriority = createQueue(18);
+    queue* blocked = createQueue(18);
 
     //Parsing options.
     while((opt = getopt(argc, argv, "s:t:l:hp")) != -1){
@@ -126,64 +134,225 @@ int main(int argc, char *argv[]){
 		}
 	}
 
-queue* lowPriority = createQueue(18);
-
-for(int x = 0; x < 3; x++){
-    processBlock newProcess = {.childPid = (pid_t)(getpid()+x)};
-    enqueue(lowPriority, newProcess);
-}
-
-fprintf(stderr, "%d\n", isFull(lowPriority));
-fprintf(stderr, "%d\n", isEmpty(lowPriority));
-
-for(int x = 0; x < 5; x++){
-    if (front(lowPriority) != NULL){
-        fprintf(stderr, "%ld\n", (long)front(lowPriority)->childPid);
-        dequeue(lowPriority);
+    //Checking if m, s, and t have valid integer values.
+    if (s <= 0 || t <= 0){
+        perror(strcat(argv[0], ": Error: Illegal parameter for -n, -s, or -t"));
+        exit(-1);
     }
-    else{fprintf(stderr, "Queue is empty!\n");}
-}
-
-//     //Checking if m, s, and t have valid integer values.
-//     if (s <= 0 || t <= 0){
-//         perror(strcat(argv[0], ": Error: Illegal parameter for -n, -s, or -t"));
-//         exit(-1);
-//     }
    
-//    //Creating or opening log file.
-//    if((logPtr = fopen(filename,"a")) == NULL)
-//    {
-//       fprintf(stderr, "%s: Error: Failed to open/create log file\n",
-// 					    argv[0]);
-//       exit(-1);             
-//    }
+   //Creating or opening log file.
+   if((logPtr = fopen(filename,"a")) == NULL)
+   {
+      fprintf(stderr, "%s: Error: Failed to open/create log file\n",
+					    argv[0]);
+      exit(-1);             
+   }
 
-//     alarm(t);
+    //alarm(t);
     
-//     //Creating shared memory segment.
-//     if ((shmid = shmget(key, sizeof(struct clock), 0666|IPC_CREAT)) < 0) {
-//         perror(strcat(argv[0],": Error: Failed shmget allocation"));
-//         exit(-1);
-//     }
+    //Creating shared memory segment.
+    if ((shmid = shmget(key, sizeof(struct Oss_clock), 0666|IPC_CREAT)) < 0) {
+        perror(strcat(argv[0],": Error: Failed shmget allocation"));
+        exit(-1);
+    }
 
-//     //Attaching to memory segment.
-//     if ((clockptr = shmat(shmid, NULL, 0)) == (void *) -1) {
-//         perror(strcat(argv[0],": Error: Failed shmat attach"));
-//         exit(-1);
-//     }
+    //Attaching to memory segment.
+    if ((clockptr = shmat(shmid, NULL, 0)) == (void *) -1) {
+        perror(strcat(argv[0],": Error: Failed shmat attach"));
+        exit(-1);
+    }
 
-//     //Creating or opening semaphore
-//     if ((mutex = sem_open ("ossSemTesting1", O_CREAT, 0644, 0)) == NULL){
-//         perror(strcat(argv[0],": Error: Failed semaphore creation"));
+    //Creating or opening semaphore
+    if ((mutex = sem_open ("ossSemTesting2", O_CREAT, 0644, 0)) == NULL){
+        perror(strcat(argv[0],": Error: Failed semaphore creation"));
 
-//         exit(-1);    
-//     } 
+        exit(-1);    
+    } 
 
+    int clockIncrement = 0;
     //Parent main loop.
-    // do {
-            
+    do {
+        clockIncrement = 0;
+        
+        if (clockptr->nanoSec > ((int)1e9)) {
+                clockptr->sec += (clockptr->nanoSec/((int)1e9));
+                clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
+            }
 
-    // } while (flag == 0);
+        if (((rand() % (10)) + 1) <= 75){
+            iteration += 1;
+            clockptr->numChildren += 1;
+            processBlock newBlock = {.childPid = (pid_t)(getpid()+iteration), .usageTime = 0, .waitTimeNSec = 0};
+            if (((rand() % (100)) + 1) >= 85){
+                newBlock.priority = 0;
+            }
+            else {
+                newBlock.priority = 1;
+            }
+            
+            //Generating overhead time and adjusting clock.
+            clockIncrement = 70000;
+            clockptr->nanoSec += clockIncrement;
+            clockptr->totalUsage += clockIncrement;
+            if (clockptr->nanoSec > ((int)1e9)) {
+                clockptr->sec += (clockptr->nanoSec/((int)1e9));
+                clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
+            }
+
+            if (newBlock.priority == 0){
+                enqueue(highPriority, newBlock);
+                fprintf(logPtr, "OSS : %ld : Adding new process to high priority queue at %d.%d\n", 
+                        (long)newBlock.childPid, clockptr->sec, clockptr->nanoSec);
+            }
+            else {
+                enqueue(lowPriority, newBlock);
+                fprintf(logPtr, "OSS : %ld : Adding new process to low priority queue at %d.%d\n", 
+                        (long)newBlock.childPid, clockptr->sec, clockptr->nanoSec);
+            }
+
+            fprintf(logPtr, "OSS : Time taken to generate process : 70000 ns\n");
+        }
+
+        if (isEmpty(blocked) == 0){
+            for (int x = 0; x < blocked->size; x++){
+                blocked->array[blocked->front+x].waitTimeNSec -= clockIncrement;
+                if (blocked->array[blocked->front+x].waitTimeNSec <= 0){
+                    blocked->array[blocked->front+x].waitTimeNSec = 0;
+                    if (blocked->array[blocked->front+x].priority == 0){
+                        fprintf(logPtr, "OSS : %ld : Moving from blocked to high priority queue at %d.%d\n", 
+                        (long)blocked->array[blocked->front+x].childPid, clockptr->sec, clockptr->nanoSec);
+                        enqueue(highPriority, *(dequeue(blocked)));
+                    }
+                    else {
+                        fprintf(logPtr, "OSS : %ld : Moving from blocked to low priority queue at %d.%d\n", 
+                        (long)blocked->array[blocked->front+x].childPid, clockptr->sec, clockptr->nanoSec);
+                        enqueue(lowPriority, *(dequeue(blocked)));
+                    }
+                    x -= 1;
+                    
+                    //Generating overhead time and adjusting clock.
+                    clockIncrement = 5000;
+                    clockptr->nanoSec += clockIncrement;
+                    clockptr->totalUsage += clockIncrement;
+                    if (clockptr->nanoSec > ((int)1e9)) {
+                        clockptr->sec += (clockptr->nanoSec/((int)1e9));
+                        clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
+                    }
+
+                    fprintf(logPtr, "OSS : Time taken to move from blocked : 5000 ns\n");
+                }
+            }
+        }
+
+        //Scheduling process.
+        if (isEmpty(highPriority) == 0 || isEmpty(lowPriority) == 0){
+            if (isEmpty(highPriority) == 0){
+                clockptr->currentlyRunning = front(highPriority)->childPid;
+                clockptr->readyFlag = 1;
+                clockptr->runningPriority = front(highPriority)->priority;
+            }
+            else if (isEmpty(highPriority) == 1 && isEmpty(lowPriority) == 0){
+                clockptr->currentlyRunning = front(lowPriority)->childPid;
+                clockptr->readyFlag = 1;
+                clockptr->runningPriority = front(lowPriority)->priority;
+            }
+
+            //Generating Overhead for scheduling.
+            clockIncrement = 400;
+            clockptr->nanoSec += clockIncrement;
+            clockptr->totalUsage += clockIncrement;
+            if (clockptr->nanoSec > ((int)1e9)) {
+                clockptr->sec += (clockptr->nanoSec/((int)1e9));
+                clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
+            }
+
+            fprintf(logPtr, "OSS : %ld : Dispatching at time %d.%d\n", (long)clockptr->currentlyRunning,
+                    clockptr->sec, clockptr->nanoSec);
+        }
+        else {
+            clockptr->currentlyRunning = 0;
+            clockptr->readyFlag = 0;
+            clockptr->totalIdle += clockIncrement;
+        }
+
+        if (clockptr->currentlyRunning != 0){
+            clockptr->childOption = (rand() % (100)) + 1;
+            if (clockptr->childOption <= 45){
+                if (clockptr->runningPriority == 0){
+                    clockIncrement = 500000;
+                    clockptr->nanoSec += clockIncrement;
+                    clockptr->totalUsage += clockIncrement;
+                    if (clockptr->nanoSec > ((int)1e9)) {
+                        clockptr->sec += (clockptr->nanoSec/((int)1e9));
+                        clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
+                    }
+                    fprintf(logPtr, "OSS : %ld : Ran for 500000 ns\n", (long)clockptr->currentlyRunning);
+                }
+                else {
+                    clockIncrement = 1000000;
+                    clockptr->nanoSec += clockIncrement;
+                    clockptr->totalUsage += clockIncrement;
+                    if (clockptr->nanoSec > ((int)1e9)) {
+                        clockptr->sec += (clockptr->nanoSec/((int)1e9));
+                        clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
+                    }
+                    fprintf(logPtr, "OSS : %ld : Ran for 1000000 ns\n", (long)clockptr->currentlyRunning);
+                }
+            }
+            else if (clockptr->childOption >= 46 && clockptr->childOption <= 90){
+                clockIncrement = 300;
+                clockptr->nanoSec += clockIncrement;
+                clockptr->totalUsage += clockIncrement;
+                if (clockptr->nanoSec > ((int)1e9)) {
+                    clockptr->sec += (clockptr->nanoSec/((int)1e9));
+                    clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
+                }
+                fprintf(logPtr, "OSS : %ld : Terminating and removing from queue at time %d.%d\n", 
+                        (long)clockptr->currentlyRunning, clockptr->sec, clockptr->nanoSec);
+                if (clockptr->runningPriority == 0){
+                    dequeue(highPriority);
+                }
+                else {
+                    dequeue(lowPriority);
+                }
+            }
+            else if (clockptr->childOption >= 91 && clockptr->childOption <= 100){
+                float value = 0.0;
+                percentage = (rand() % (99)) + 1;
+                value = (float)percentage;
+                fprintf(stderr, "value: %f", value);
+                fprintf(logPtr, "OSS : %ld : %d%% of quantum used\n", 
+                        (long)clockptr->currentlyRunning, (int)percentage);
+                if (clockptr->runningPriority == 0){
+                    clockIncrement = (int)((value*500000.00)/100.0);
+                    fprintf(stderr, "increment: %d\n", clockIncrement);
+                    highPriority->array[highPriority->front].waitTimeNSec = 100000;
+                    enqueue(blocked, *(dequeue(highPriority)));
+                }
+                else {
+                    clockIncrement = (int)((value*1000000.00)/100.0);
+                    fprintf(stderr, "increment: %d\n", clockIncrement);
+                    lowPriority->array[lowPriority->front].waitTimeNSec = 100000;
+                    enqueue(blocked, *(dequeue(lowPriority)));
+                }
+                
+                clockptr->nanoSec += clockIncrement;
+                clockptr->totalUsage += clockIncrement;
+                if (clockptr->nanoSec > ((int)1e9)) {
+                    clockptr->sec += (clockptr->nanoSec/((int)1e9));
+                    clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
+                }
+                fprintf(logPtr, "OSS : %ld : Ran for %d ns: moved to blocked queue\n", 
+                        (long)clockptr->currentlyRunning, clockIncrement);
+            }
+
+        }
+
+        clockptr->currentlyRunning = 0;
+        clockptr->readyFlag = 0;
+
+
+    } while (flag == 0 && iteration < 20);
 
     //Sending signal to all children
     if (flag == 1) {
@@ -193,23 +362,23 @@ for(int x = 0; x < 5; x++){
         }
     }
 
-    // //Detaching from memory segment.
-    // if (shmdt(clockptr) == -1) {
-    //     perror(strcat(argv[0],": Error: Failed shmdt detach"));
-    //     clockptr = NULL;
-    //     exit(-1);
-    // }
+    //Detaching from memory segment.
+    if (shmdt(clockptr) == -1) {
+        perror(strcat(argv[0],": Error: Failed shmdt detach"));
+        clockptr = NULL;
+        exit(-1);
+    }
 
-    // //Removing memory segment.
-    // if (shmctl(shmid, IPC_RMID, 0) == -1) {
-    //     perror(strcat(argv[0],": Error: Failed shmctl delete"));
-    //     exit(-1);
-    // }
+    //Removing memory segment.
+    if (shmctl(shmid, IPC_RMID, 0) == -1) {
+        perror(strcat(argv[0],": Error: Failed shmctl delete"));
+        exit(-1);
+    }
 
-    // //Disconnecting and removing semaphore.
-    // sem_close(mutex);
-    // sem_unlink ("ossSem");   
-    // fclose(logPtr);
+    //Disconnecting and removing semaphore.
+    sem_close(mutex);
+    sem_unlink ("ossSem");   
+    fclose(logPtr);
         
     return 0;
 }
