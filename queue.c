@@ -38,7 +38,7 @@ void enqueue(queue* currentQueue, processBlock item){
 // It changes front and size 
 processBlock dequeue(queue* currentQueue) 
 { 
-    processBlock empty;
+    processBlock empty = {.childPid = 0};
     if (isEmpty(currentQueue)) 
         return empty; 
     processBlock item = currentQueue->array[currentQueue->front]; 
@@ -50,7 +50,7 @@ processBlock dequeue(queue* currentQueue)
 // Function to get front of queue 
 processBlock front(queue* currentQueue) 
 { 
-    processBlock empty;
+    processBlock empty = {.childPid = 0};
     if (isEmpty(currentQueue)) 
         return empty; 
     return currentQueue->array[currentQueue->front]; 

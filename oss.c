@@ -136,7 +136,7 @@ for(int x = 0; x < 3; x++){
 fprintf(stderr, "%d\n", isFull(lowPriority));
 fprintf(stderr, "%d\n", isEmpty(lowPriority));
 
-for(int x = 0; x < 3; x++){
+for(int x = 0; x < 5; x++){
     fprintf(stderr, "%ld\n", (long)front(lowPriority).childPid);
     dequeue(lowPriority);
 }
