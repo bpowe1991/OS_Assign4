@@ -29,7 +29,7 @@ typedef struct queue
 { 
     int front, rear, size; 
     unsigned capacity; 
-    struct processBlock* array; 
+    processBlock* array; 
 } queue; 
 
 //Queue function declarations.
@@ -37,7 +37,7 @@ queue* createQueue(unsigned capacity);
 int isFull(struct queue* queue);
 int isEmpty(struct queue* queue);
 void enqueue(struct queue* queue, struct processBlock item);
-struct processBlock dequeue(struct queue* queue);
-struct processBlock front(struct queue* queue);
+processBlock dequeue(struct queue* queue);
+processBlock front(struct queue* queue);
 
 #endif

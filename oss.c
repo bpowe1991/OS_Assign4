@@ -126,46 +126,61 @@ int main(int argc, char *argv[]){
 		}
 	}
 
-    //Checking if m, s, and t have valid integer values.
-    if (s <= 0 || t <= 0){
-        perror(strcat(argv[0], ": Error: Illegal parameter for -n, -s, or -t"));
-        exit(-1);
-    }
+queue* lowPriority = createQueue(18);
+
+for(int x = 0; x < 3; x++){
+    processBlock newProcess = {.childPid = (pid_t)(getpid()+x)};
+    enqueue(lowPriority, newProcess);
+}
+
+fprintf(stderr, "%d\n", isFull(lowPriority));
+fprintf(stderr, "%d\n", isEmpty(lowPriority));
+
+for(int x = 0; x < 3; x++){
+    fprintf(stderr, "%ld\n", (long)front(lowPriority).childPid);
+    dequeue(lowPriority);
+}
+
+//     //Checking if m, s, and t have valid integer values.
+//     if (s <= 0 || t <= 0){
+//         perror(strcat(argv[0], ": Error: Illegal parameter for -n, -s, or -t"));
+//         exit(-1);
+//     }
    
-   //Creating or opening log file.
-   if((logPtr = fopen(filename,"a")) == NULL)
-   {
-      fprintf(stderr, "%s: Error: Failed to open/create log file\n",
-					    argv[0]);
-      exit(-1);             
-   }
+//    //Creating or opening log file.
+//    if((logPtr = fopen(filename,"a")) == NULL)
+//    {
+//       fprintf(stderr, "%s: Error: Failed to open/create log file\n",
+// 					    argv[0]);
+//       exit(-1);             
+//    }
 
-    alarm(t);
+//     alarm(t);
     
-    //Creating shared memory segment.
-    if ((shmid = shmget(key, sizeof(struct clock), 0666|IPC_CREAT)) < 0) {
-        perror(strcat(argv[0],": Error: Failed shmget allocation"));
-        exit(-1);
-    }
+//     //Creating shared memory segment.
+//     if ((shmid = shmget(key, sizeof(struct clock), 0666|IPC_CREAT)) < 0) {
+//         perror(strcat(argv[0],": Error: Failed shmget allocation"));
+//         exit(-1);
+//     }
 
-    //Attaching to memory segment.
-    if ((clockptr = shmat(shmid, NULL, 0)) == (void *) -1) {
-        perror(strcat(argv[0],": Error: Failed shmat attach"));
-        exit(-1);
-    }
+//     //Attaching to memory segment.
+//     if ((clockptr = shmat(shmid, NULL, 0)) == (void *) -1) {
+//         perror(strcat(argv[0],": Error: Failed shmat attach"));
+//         exit(-1);
+//     }
 
-    //Creating or opening semaphore
-    if ((mutex = sem_open ("ossSemTesting1", O_CREAT, 0644, 0)) == NULL){
-        perror(strcat(argv[0],": Error: Failed semaphore creation"));
+//     //Creating or opening semaphore
+//     if ((mutex = sem_open ("ossSemTesting1", O_CREAT, 0644, 0)) == NULL){
+//         perror(strcat(argv[0],": Error: Failed semaphore creation"));
 
-        exit(-1);    
-    } 
+//         exit(-1);    
+//     } 
 
     //Parent main loop.
-    do {
+    // do {
             
 
-    } while (flag == 0);
+    // } while (flag == 0);
 
     //Sending signal to all children
     if (flag == 1) {
@@ -175,23 +190,23 @@ int main(int argc, char *argv[]){
         }
     }
 
-    //Detaching from memory segment.
-    if (shmdt(clockptr) == -1) {
-        perror(strcat(argv[0],": Error: Failed shmdt detach"));
-        clockptr = NULL;
-        exit(-1);
-    }
+    // //Detaching from memory segment.
+    // if (shmdt(clockptr) == -1) {
+    //     perror(strcat(argv[0],": Error: Failed shmdt detach"));
+    //     clockptr = NULL;
+    //     exit(-1);
+    // }
 
-    //Removing memory segment.
-    if (shmctl(shmid, IPC_RMID, 0) == -1) {
-        perror(strcat(argv[0],": Error: Failed shmctl delete"));
-        exit(-1);
-    }
+    // //Removing memory segment.
+    // if (shmctl(shmid, IPC_RMID, 0) == -1) {
+    //     perror(strcat(argv[0],": Error: Failed shmctl delete"));
+    //     exit(-1);
+    // }
 
-    //Disconnecting and removing semaphore.
-    sem_close(mutex);
-    sem_unlink ("ossSem");   
-    fclose(logPtr);
+    // //Disconnecting and removing semaphore.
+    // sem_close(mutex);
+    // sem_unlink ("ossSem");   
+    // fclose(logPtr);
         
     return 0;
 }

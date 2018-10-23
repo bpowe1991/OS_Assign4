@@ -5,7 +5,7 @@
 
 // function to create a queue of given capacity.  
 // It initializes size of queue as 0 
-struct Queue* createQueue(unsigned capacity) 
+queue* createQueue(unsigned capacity) 
 { 
     struct queue* newQueue = (queue*) malloc(sizeof(queue)); 
     newQueue->capacity = capacity; 
@@ -36,10 +36,11 @@ void enqueue(queue* currentQueue, processBlock item){
 
 // Function to remove an item from queue.  
 // It changes front and size 
-struct processBlock dequeue(queue* currentQueue) 
+processBlock dequeue(queue* currentQueue) 
 { 
+    processBlock empty;
     if (isEmpty(currentQueue)) 
-        return; 
+        return empty; 
     processBlock item = currentQueue->array[currentQueue->front]; 
     currentQueue->front = (currentQueue->front + 1)%currentQueue->capacity; 
     currentQueue->size = currentQueue->size - 1; 
@@ -47,9 +48,10 @@ struct processBlock dequeue(queue* currentQueue)
 } 
 
 // Function to get front of queue 
-struct processBlock front(queue* currentQueue) 
+processBlock front(queue* currentQueue) 
 { 
+    processBlock empty;
     if (isEmpty(currentQueue)) 
-        return; 
+        return empty; 
     return currentQueue->array[currentQueue->front]; 
 } 
