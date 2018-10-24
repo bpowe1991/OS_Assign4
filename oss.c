@@ -216,9 +216,9 @@ int main(int argc, char *argv[]){
 
         if (isEmpty(blocked) == 0){
             for (int x = 0; x < blocked->size; x++){
-                if ((((blocked->array[blocked->front+x].waitTimeSec*((int)1e9)))+
-                    blocked->array[blocked->front+x].waitTimeNSec) <= ((clockptr->sec*((int)1e9))+
-                    clockptr->nanoSec)){
+                if ((blocked->array[blocked->front+x].waitTimeSec < clockptr->sec) ||
+                    ((blocked->array[blocked->front+x].waitTimeSec == clockptr->sec) &&
+                    (blocked->array[blocked->front+x].waitTimeNSec <= clockptr->nanoSec))){
                     blocked->array[blocked->front+x].waitTimeSec = 0;
                     blocked->array[blocked->front+x].waitTimeNSec = 0;
                     
@@ -342,7 +342,7 @@ int main(int argc, char *argv[]){
                 blocked->array[blocked->rear].waitTimeNSec = clockptr->nanoSec+(rand() % 1001);
                     blocked->array[blocked->rear].waitTimeSec = clockptr->sec;
                     fprintf(stderr, "value: %d\n", blocked->array[blocked->rear].waitTimeNSec);
-                    if (blocked->array[blocked->rear].waitTimeNSec >= ((int)1e9)) {
+                    if (blocked->array[blocked->rear].waitTimeNSec > ((int)1e9)) {
                          blocked->array[blocked->rear].waitTimeSec = 
                         (blocked->array[blocked->rear].waitTimeNSec/((int)1e9))+clockptr->sec;
                          blocked->array[blocked->rear].waitTimeNSec = 
@@ -351,7 +351,7 @@ int main(int argc, char *argv[]){
                 fprintf(logPtr, "OSS : %ld : Ran for %d ns: moved to blocked queue\n", 
                         (long)clockptr->currentlyRunning, clockIncrement);
                 fprintf(stderr, "%ld : Wait time %d.%d\n", (long)blocked->array[blocked->rear].childPid, blocked->array[blocked->rear].waitTimeSec, 
-                        blocked->array[blocked->rear].waitTimeSec);
+                        blocked->array[blocked->rear].waitTimeNSec);
             }
 
         }
