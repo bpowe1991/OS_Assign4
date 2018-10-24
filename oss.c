@@ -141,7 +141,7 @@ int main(int argc, char *argv[]){
     }
    
    //Creating or opening log file.
-   if((logPtr = fopen(filename,"a")) == NULL)
+   if((logPtr = fopen(filename,"w")) == NULL)
    {
       fprintf(stderr, "%s: Error: Failed to open/create log file\n",
 					    argv[0]);
@@ -192,7 +192,7 @@ int main(int argc, char *argv[]){
             }
             
             //Generating overhead time and adjusting clock.
-            clockIncrement = 70000;
+            clockIncrement = (rand() % 1001);
             clockptr->nanoSec += clockIncrement;
             clockptr->totalUsage += clockIncrement;
             if (clockptr->nanoSec > ((int)1e9)) {
@@ -211,7 +211,7 @@ int main(int argc, char *argv[]){
                         (long)newBlock.childPid, clockptr->sec, clockptr->nanoSec);
             }
 
-            fprintf(logPtr, "OSS : Time taken to generate process : 70000 ns\n");
+            fprintf(logPtr, "OSS : Time taken to generate process : %d ns\n", clockIncrement);
         }
 
         if (isEmpty(blocked) == 0){
@@ -223,7 +223,7 @@ int main(int argc, char *argv[]){
                     blocked->array[blocked->front+x].waitTimeNSec = 0;
                     
                     //Generating overhead time and adjusting clock.
-                    clockIncrement = 5000;
+                    clockIncrement = (rand() % 1001);
                     clockptr->nanoSec += clockIncrement;
                     clockptr->totalUsage += clockIncrement;
                     if (clockptr->nanoSec > ((int)1e9)) {
@@ -231,7 +231,7 @@ int main(int argc, char *argv[]){
                         clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
                     }
 
-                    fprintf(logPtr, "OSS : Time taken to move from blocked : 5000 ns\n");
+                    fprintf(logPtr, "OSS : Time taken to move from blocked : %d ns\n", clockIncrement);
                     if (blocked->array[blocked->front+x].priority == 0){
                         fprintf(logPtr, "OSS : %ld : Moving from blocked to high priority queue at %d.%d\n", 
                         (long)blocked->array[blocked->front+x].childPid, clockptr->sec, clockptr->nanoSec);
@@ -261,7 +261,7 @@ int main(int argc, char *argv[]){
             }
 
             //Generating Overhead for scheduling.
-            clockIncrement = 400;
+            clockIncrement = (rand() % 1001);
             clockptr->nanoSec += clockIncrement;
             clockptr->totalUsage += clockIncrement;
             if (clockptr->nanoSec > ((int)1e9)) {
@@ -325,27 +325,10 @@ int main(int argc, char *argv[]){
                         (long)clockptr->currentlyRunning, (int)percentage);
                 if (clockptr->runningPriority == 0){
                     clockIncrement = (int)((percentage*500000.00)/100.0);
-                    highPriority->array[highPriority->front].waitTimeNSec = clockptr->nanoSec+100000;
-                    if (highPriority->array[highPriority->front].waitTimeNSec > ((int)1e9)) {
-                         highPriority->array[highPriority->front].waitTimeNSec += 
-                        (highPriority->array[highPriority->front].waitTimeNSec/((int)1e9));
-                         highPriority->array[highPriority->front].waitTimeSec = 
-                        (highPriority->array[highPriority->front].waitTimeSec+clockptr->sec)
-                         %((int)1e9);
-                    }
                     enqueue(blocked, *(dequeue(highPriority)));
                 }
                 else {
                     clockIncrement = (int)((percentage*1000000.00)/100.0);
-                    lowPriority->array[lowPriority->front].waitTimeNSec = 100000;
-                    lowPriority->array[lowPriority->front].waitTimeNSec = clockptr->nanoSec+100000;
-                    if (lowPriority->array[lowPriority->front].waitTimeNSec > ((int)1e9)) {
-                         lowPriority->array[lowPriority->front].waitTimeNSec += 
-                        (lowPriority->array[lowPriority->front].waitTimeNSec/((int)1e9));
-                         lowPriority->array[lowPriority->front].waitTimeSec = 
-                        (lowPriority->array[lowPriority->front].waitTimeSec+clockptr->sec)
-                         %((int)1e9);
-                    }
                     enqueue(blocked, *(dequeue(lowPriority)));
                 }
                 
@@ -355,8 +338,20 @@ int main(int argc, char *argv[]){
                     clockptr->sec += (clockptr->nanoSec/((int)1e9));
                     clockptr->nanoSec = (clockptr->nanoSec%((int)1e9));
                 }
+
+                blocked->array[blocked->rear].waitTimeNSec = clockptr->nanoSec+(rand() % 1001);
+                    blocked->array[blocked->rear].waitTimeSec = clockptr->sec;
+                    fprintf(stderr, "value: %d\n", blocked->array[blocked->rear].waitTimeNSec);
+                    if (blocked->array[blocked->rear].waitTimeNSec >= ((int)1e9)) {
+                         blocked->array[blocked->rear].waitTimeSec = 
+                        (blocked->array[blocked->rear].waitTimeNSec/((int)1e9))+clockptr->sec;
+                         blocked->array[blocked->rear].waitTimeNSec = 
+                        (blocked->array[blocked->rear].waitTimeNSec)%((int)1e9);
+                    }
                 fprintf(logPtr, "OSS : %ld : Ran for %d ns: moved to blocked queue\n", 
                         (long)clockptr->currentlyRunning, clockIncrement);
+                fprintf(stderr, "%ld : Wait time %d.%d\n", (long)blocked->array[blocked->rear].childPid, blocked->array[blocked->rear].waitTimeSec, 
+                        blocked->array[blocked->rear].waitTimeSec);
             }
 
         }
