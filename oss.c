@@ -216,20 +216,11 @@ int main(int argc, char *argv[]){
 
         if (isEmpty(blocked) == 0){
             for (int x = 0; x < blocked->size; x++){
-                blocked->array[blocked->front+x].waitTimeNSec -= clockIncrement;
-                if (blocked->array[blocked->front+x].waitTimeNSec <= 0){
+                if ((((blocked->array[blocked->front+x].waitTimeSec*((int)1e9)))+
+                    blocked->array[blocked->front+x].waitTimeNSec) <= ((clockptr->sec*((int)1e9))+
+                    clockptr->nanoSec)){
+                    blocked->array[blocked->front+x].waitTimeSec = 0;
                     blocked->array[blocked->front+x].waitTimeNSec = 0;
-                    if (blocked->array[blocked->front+x].priority == 0){
-                        fprintf(logPtr, "OSS : %ld : Moving from blocked to high priority queue at %d.%d\n", 
-                        (long)blocked->array[blocked->front+x].childPid, clockptr->sec, clockptr->nanoSec);
-                        enqueue(highPriority, *(dequeue(blocked)));
-                    }
-                    else {
-                        fprintf(logPtr, "OSS : %ld : Moving from blocked to low priority queue at %d.%d\n", 
-                        (long)blocked->array[blocked->front+x].childPid, clockptr->sec, clockptr->nanoSec);
-                        enqueue(lowPriority, *(dequeue(blocked)));
-                    }
-                    x -= 1;
                     
                     //Generating overhead time and adjusting clock.
                     clockIncrement = 5000;
@@ -241,6 +232,17 @@ int main(int argc, char *argv[]){
                     }
 
                     fprintf(logPtr, "OSS : Time taken to move from blocked : 5000 ns\n");
+                    if (blocked->array[blocked->front+x].priority == 0){
+                        fprintf(logPtr, "OSS : %ld : Moving from blocked to high priority queue at %d.%d\n", 
+                        (long)blocked->array[blocked->front+x].childPid, clockptr->sec, clockptr->nanoSec);
+                        enqueue(highPriority, *(dequeue(blocked)));
+                    }
+                    else {
+                        fprintf(logPtr, "OSS : %ld : Moving from blocked to low priority queue at %d.%d\n", 
+                        (long)blocked->array[blocked->front+x].childPid, clockptr->sec, clockptr->nanoSec);
+                        enqueue(lowPriority, *(dequeue(blocked)));
+                    }
+                    x -= 1;
                 }
             }
         }
@@ -323,12 +325,27 @@ int main(int argc, char *argv[]){
                         (long)clockptr->currentlyRunning, (int)percentage);
                 if (clockptr->runningPriority == 0){
                     clockIncrement = (int)((percentage*500000.00)/100.0);
-                    highPriority->array[highPriority->front].waitTimeNSec = 100000;
+                    highPriority->array[highPriority->front].waitTimeNSec = clockptr->nanoSec+100000;
+                    if (highPriority->array[highPriority->front].waitTimeNSec > ((int)1e9)) {
+                         highPriority->array[highPriority->front].waitTimeNSec += 
+                        (highPriority->array[highPriority->front].waitTimeNSec/((int)1e9));
+                         highPriority->array[highPriority->front].waitTimeSec = 
+                        (highPriority->array[highPriority->front].waitTimeSec+clockptr->sec)
+                         %((int)1e9);
+                    }
                     enqueue(blocked, *(dequeue(highPriority)));
                 }
                 else {
                     clockIncrement = (int)((percentage*1000000.00)/100.0);
                     lowPriority->array[lowPriority->front].waitTimeNSec = 100000;
+                    lowPriority->array[lowPriority->front].waitTimeNSec = clockptr->nanoSec+100000;
+                    if (lowPriority->array[lowPriority->front].waitTimeNSec > ((int)1e9)) {
+                         lowPriority->array[lowPriority->front].waitTimeNSec += 
+                        (lowPriority->array[lowPriority->front].waitTimeNSec/((int)1e9));
+                         lowPriority->array[lowPriority->front].waitTimeSec = 
+                        (lowPriority->array[lowPriority->front].waitTimeSec+clockptr->sec)
+                         %((int)1e9);
+                    }
                     enqueue(blocked, *(dequeue(lowPriority)));
                 }
                 
@@ -348,7 +365,7 @@ int main(int argc, char *argv[]){
         clockptr->readyFlag = 0;
 
 
-    } while (flag == 0 && iteration < 50);
+    } while (flag == 0 && iteration < 10);
 
     fprintf(stderr, "Total Usage time: %d ns\n", clockptr->totalUsage);
     fprintf(stderr, "Total Idle time: %d ns\n", clockptr->totalIdle);

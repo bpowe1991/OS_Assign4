@@ -7,6 +7,7 @@
 typedef struct processBlock {
     pid_t childPid;
     int usageTime;
+    int waitTimeSec;
     int waitTimeNSec;
     int priority;
 } processBlock;
