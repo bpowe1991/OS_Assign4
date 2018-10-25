@@ -1,0 +1,25 @@
+OSS : 49134 : Adding new process to low priority queue at 0.650
+OSS : Time taken to generate process : 650 ns
+OSS : 49134 : Dispatching at time 0.728
+OSS : 49134 : 42% of quantum used
+OSS : 49134 : Ran for 4200 ns: moved to blocked queue
+OSS : 49135 : Adding new process to low priority queue at 0.5695
+OSS : Time taken to generate process : 767 ns
+OSS : Time taken to move from blocked : 430 ns
+OSS : 49134 : Moving from blocked to low priority queue at 0.6125
+OSS : 49135 : Dispatching at time 0.6884
+OSS : 49135 : 60% of quantum used
+OSS : 49135 : Ran for 6000 ns: moved to blocked queue
+OSS : 49134 : Dispatching at time 0.12926
+OSS : 49134 : 58% of quantum used
+OSS : 49134 : Ran for 5800 ns: moved to blocked queue
+
+OSS :: System Ending ::
+
+OSS : System Statistics
+Total Usage time: 18726 ns
+Total Idle time: 1066073 ns
+Total Wait time: 0 ns
+Average Usage time: 9363 ns
+Average Idle time: 533036 ns
+Average Wait time: 0 ns

@@ -1,0 +1,173 @@
+OSS : 49065 : Adding new process to low priority queue at 0.660
+OSS : Time taken to generate process : 660 ns
+OSS : 49065 : Dispatching at time 0.718
+OSS : 49065 : Terminating and removing from queue at time 0.1133
+OSS : 49066 : Adding new process to low priority queue at 0.2104
+OSS : Time taken to generate process : 971 ns
+OSS : 49066 : Dispatching at time 0.2867
+OSS : 49066 : 73% of quantum used
+OSS : 49066 : Ran for 7300 ns: moved to blocked queue
+OSS : 49067 : Adding new process to low priority queue at 0.11137
+OSS : Time taken to generate process : 970 ns
+OSS : Time taken to move from blocked : 22 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.11159
+OSS : 49067 : Dispatching at time 0.11366
+OSS : 49067 : Terminating and removing from queue at time 0.11530
+OSS : 49066 : Dispatching at time 0.11545
+OSS : 49066 : 58% of quantum used
+OSS : 49066 : Ran for 5800 ns: moved to blocked queue
+OSS : 49068 : Adding new process to low priority queue at 0.17639
+OSS : Time taken to generate process : 294 ns
+OSS : 49068 : Dispatching at time 0.17798
+OSS : 49068 : 83% of quantum used
+OSS : 49068 : Ran for 8300 ns: moved to blocked queue
+OSS : Time taken to move from blocked : 1 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.26099
+OSS : 49066 : Dispatching at time 0.26130
+OSS : 49066 : 58% of quantum used
+OSS : 49066 : Ran for 5800 ns: moved to blocked queue
+OSS : Time taken to move from blocked : 670 ns
+OSS : 49068 : Moving from blocked to low priority queue at 0.32600
+OSS : Time taken to move from blocked : 597 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.33197
+OSS : 49068 : Dispatching at time 0.34127
+OSS : 49068 : Terminating and removing from queue at time 0.34574
+OSS : 49066 : Dispatching at time 0.35184
+OSS : 49066 : 27% of quantum used
+OSS : 49066 : Ran for 2700 ns: moved to blocked queue
+OSS : 49069 : Adding new process to low priority queue at 0.37944
+OSS : Time taken to generate process : 60 ns
+OSS : 49069 : Dispatching at time 0.38437
+OSS : 49069 : Terminating and removing from queue at time 0.38891
+OSS : Time taken to move from blocked : 375 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.39266
+OSS : 49066 : Dispatching at time 0.39774
+OSS : 49066 : 60% of quantum used
+OSS : 49066 : Ran for 6000 ns: moved to blocked queue
+OSS : 49070 : Adding new process to low priority queue at 0.46147
+OSS : Time taken to generate process : 373 ns
+OSS : Time taken to move from blocked : 194 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.46341
+OSS : 49070 : Dispatching at time 0.46374
+OSS : 49070 : Terminating and removing from queue at time 0.46550
+OSS : 49066 : Dispatching at time 0.47550
+OSS : 49066 : 71% of quantum used
+OSS : 49066 : Ran for 7100 ns: moved to blocked queue
+OSS : 49071 : Adding new process to low priority queue at 0.55446
+OSS : Time taken to generate process : 796 ns
+OSS : Time taken to move from blocked : 418 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.55864
+OSS : 49071 : Dispatching at time 0.56064
+OSS : 49071 : Terminating and removing from queue at time 0.56677
+OSS : 49066 : Dispatching at time 0.57549
+OSS : 49066 : 17% of quantum used
+OSS : 49066 : Ran for 1700 ns: moved to blocked queue
+OSS : 49072 : Adding new process to low priority queue at 0.59898
+OSS : Time taken to generate process : 649 ns
+OSS : 49072 : Dispatching at time 0.60263
+OSS : 49072 : Terminating and removing from queue at time 0.60821
+OSS : Time taken to move from blocked : 883 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.61704
+OSS : 49066 : Dispatching at time 0.62263
+OSS : 49066 : 23% of quantum used
+OSS : 49066 : Ran for 2300 ns: moved to blocked queue
+OSS : 49073 : Adding new process to low priority queue at 0.65200
+OSS : Time taken to generate process : 637 ns
+OSS : Time taken to move from blocked : 87 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.65287
+OSS : 49073 : Dispatching at time 0.66066
+OSS : 49073 : Terminating and removing from queue at time 0.66520
+OSS : 49066 : Dispatching at time 0.66876
+OSS : 49066 : 82% of quantum used
+OSS : 49066 : Ran for 8200 ns: moved to blocked queue
+OSS : 49074 : Adding new process to low priority queue at 0.75487
+OSS : Time taken to generate process : 411 ns
+OSS : Time taken to move from blocked : 815 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.76302
+OSS : 49074 : Dispatching at time 0.76441
+OSS : 49074 : Terminating and removing from queue at time 0.76508
+OSS : 49066 : Dispatching at time 0.77462
+OSS : 49066 : 53% of quantum used
+OSS : 49066 : Ran for 5300 ns: moved to blocked queue
+OSS : 49075 : Adding new process to low priority queue at 0.83670
+OSS : Time taken to generate process : 908 ns
+OSS : Time taken to move from blocked : 405 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.84075
+OSS : 49075 : Dispatching at time 0.84915
+OSS : 49075 : Terminating and removing from queue at time 0.85393
+OSS : 49066 : Dispatching at time 0.85505
+OSS : 49066 : 40% of quantum used
+OSS : 49066 : Ran for 4000 ns: moved to blocked queue
+OSS : 49076 : Adding new process to low priority queue at 0.90195
+OSS : Time taken to generate process : 690 ns
+OSS : Time taken to move from blocked : 34 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.90229
+OSS : 49076 : Dispatching at time 0.90307
+OSS : 49076 : Terminating and removing from queue at time 0.91082
+OSS : 49066 : Dispatching at time 0.91104
+OSS : 49066 : 9% of quantum used
+OSS : 49066 : Ran for 900 ns: moved to blocked queue
+OSS : 49077 : Adding new process to low priority queue at 0.92527
+OSS : Time taken to generate process : 523 ns
+OSS : 49077 : Dispatching at time 0.93277
+OSS : 49077 : Terminating and removing from queue at time 0.93549
+OSS : Time taken to move from blocked : 427 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.93976
+OSS : 49066 : Dispatching at time 0.94501
+OSS : 49066 : 82% of quantum used
+OSS : 49066 : Ran for 8200 ns: moved to blocked queue
+OSS : 49078 : Adding new process to low priority queue at 0.102991
+OSS : Time taken to generate process : 290 ns
+OSS : 49078 : Dispatching at time 0.103703
+OSS : 49078 : Terminating and removing from queue at time 0.104423
+OSS : Time taken to move from blocked : 722 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.105145
+OSS : 49066 : Dispatching at time 0.105897
+OSS : 49066 : 21% of quantum used
+OSS : 49066 : Ran for 2100 ns: moved to blocked queue
+OSS : 49079 : Adding new process to high priority queue at 0.108623
+OSS : Time taken to generate process : 626 ns
+OSS : Time taken to move from blocked : 23 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.108646
+OSS : 49079 : Dispatching at time 0.109530
+OSS : 49079 : Terminating and removing from queue at time 0.109969
+OSS : 49066 : Dispatching at time 0.110902
+OSS : 49066 : 11% of quantum used
+OSS : 49066 : Ran for 1100 ns: moved to blocked queue
+OSS : 49080 : Adding new process to high priority queue at 0.112225
+OSS : Time taken to generate process : 223 ns
+OSS : 49080 : Dispatching at time 0.113175
+OSS : 49080 : Terminating and removing from queue at time 0.113673
+OSS : Time taken to move from blocked : 471 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.114144
+OSS : 49066 : Dispatching at time 0.114470
+OSS : 49066 : 33% of quantum used
+OSS : 49066 : Ran for 3300 ns: moved to blocked queue
+OSS : 49081 : Adding new process to low priority queue at 0.118512
+OSS : Time taken to generate process : 742 ns
+OSS : Time taken to move from blocked : 773 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.119285
+OSS : 49081 : Dispatching at time 0.119319
+OSS : 49081 : Terminating and removing from queue at time 0.120247
+OSS : 49066 : Dispatching at time 0.120394
+OSS : 49066 : 50% of quantum used
+OSS : 49066 : Ran for 5000 ns: moved to blocked queue
+OSS : 49082 : Adding new process to low priority queue at 0.126311
+OSS : Time taken to generate process : 917 ns
+OSS : Time taken to move from blocked : 340 ns
+OSS : 49066 : Moving from blocked to low priority queue at 0.126651
+OSS : 49082 : Dispatching at time 0.127532
+OSS : 49082 : Terminating and removing from queue at time 0.128172
+OSS : 49066 : Dispatching at time 0.128408
+OSS : 49066 : 1% of quantum used
+OSS : 49066 : Ran for 100 ns: moved to blocked queue
+
+OSS :: System Ending ::
+
+OSS : System Statistics
+Total Usage time: 128508 ns
+Total Idle time: 557347538461 ns
+Total Wait time: 44869 ns
+Average Usage time: 7139 ns
+Average Idle time: 30963752136 ns
+Average Wait time: 2492 ns

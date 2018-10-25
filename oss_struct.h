@@ -1,3 +1,13 @@
+/*
+Programmer: Briton A. Powe          Program Homework Assignment #4
+Date: 10/25/18                      Class: Operating Systems
+File: oss_struct.c
+------------------------------------------------------------------------
+Program Description:
+Header file to declare process block, oss shared memory clock, and queue
+structures. The function declarations are also stated here.
+*/
+
 #ifndef OSS_CLOCK
 #define OSS_CLOCK
 #include <sys/types.h>
@@ -10,6 +20,8 @@ typedef struct processBlock {
     int waitTimeSec;
     int waitTimeNSec;
     int priority;
+    int timeInSysSec;
+    int timeInSysNSec;
 } processBlock;
 
 //Structure to be used in shared memory.
@@ -20,10 +32,10 @@ typedef struct Oss_clock {
     int sec;
     int nanoSec;
     int childOption;
-    int totalUsage;
-    int totalWait;
+    long totalUsage;
+    long totalWait;
     int numChildren;
-    int totalIdle;
+    long totalIdle;
 } oss_clock;
 
 //Queue structure.

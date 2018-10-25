@@ -1,0 +1,144 @@
+OSS : 49604 : Adding new process to low priority queue at 0.330
+OSS : Time taken to generate process : 330 ns
+OSS : 49604 : Dispatching at time 0.641
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.11561
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.22162
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.32943
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.43586
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.53969
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.63983
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.74956
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.85617
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.96222
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.106614
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.116753
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.126783
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.137227
+OSS : 49604 : Ran for 10000 ns
+OSS : 49604 : Dispatching at time 0.148005
+OSS : 49604 : Terminating and removing from queue at time 0.148123
+OSS : 49605 : Adding new process to low priority queue at 0.148805
+OSS : Time taken to generate process : 682 ns
+OSS : 49605 : Dispatching at time 0.149265
+OSS : 49605 : Ran for 10000 ns
+OSS : 49605 : Dispatching at time 0.159770
+OSS : 49605 : Terminating and removing from queue at time 0.159931
+OSS : 49606 : Adding new process to low priority queue at 0.160302
+OSS : Time taken to generate process : 371 ns
+OSS : 49606 : Dispatching at time 0.160933
+OSS : 49606 : Ran for 10000 ns
+OSS : 49606 : Dispatching at time 0.171210
+OSS : 49606 : Terminating and removing from queue at time 0.171448
+OSS : 49607 : Adding new process to high priority queue at 0.172209
+OSS : Time taken to generate process : 761 ns
+OSS : 49607 : Dispatching at time 0.172808
+OSS : 49607 : Ran for 5000 ns
+OSS : 49607 : Dispatching at time 0.178095
+OSS : 49607 : Terminating and removing from queue at time 0.178814
+OSS : 49608 : Adding new process to low priority queue at 0.179814
+OSS : Time taken to generate process : 1000 ns
+OSS : 49608 : Dispatching at time 0.180352
+OSS : 49608 : Ran for 10000 ns
+OSS : 49608 : Dispatching at time 0.191316
+OSS : 49608 : Terminating and removing from queue at time 0.191755
+OSS : 49609 : Adding new process to high priority queue at 0.191852
+OSS : Time taken to generate process : 97 ns
+OSS : 49609 : Dispatching at time 0.192300
+OSS : 49609 : Ran for 5000 ns
+OSS : 49609 : Dispatching at time 0.197639
+OSS : 49609 : Terminating and removing from queue at time 0.198550
+OSS : 49610 : Adding new process to low priority queue at 0.198706
+OSS : Time taken to generate process : 156 ns
+OSS : 49610 : Dispatching at time 0.199637
+OSS : 49610 : Ran for 10000 ns
+OSS : 49610 : Dispatching at time 0.209811
+OSS : 49610 : Terminating and removing from queue at time 0.210408
+OSS : 49611 : Adding new process to low priority queue at 0.210934
+OSS : Time taken to generate process : 526 ns
+OSS : 49611 : Dispatching at time 0.211280
+OSS : 49611 : Ran for 10000 ns
+OSS : 49611 : Dispatching at time 0.221453
+OSS : 49611 : Terminating and removing from queue at time 0.221827
+OSS : 49612 : Adding new process to low priority queue at 0.222048
+OSS : Time taken to generate process : 221 ns
+OSS : 49612 : Dispatching at time 0.222959
+OSS : 49612 : Ran for 10000 ns
+OSS : 49612 : Dispatching at time 0.233493
+OSS : 49612 : Terminating and removing from queue at time 0.233629
+OSS : 49613 : Adding new process to low priority queue at 0.233674
+OSS : Time taken to generate process : 45 ns
+OSS : 49613 : Dispatching at time 0.234126
+OSS : 49613 : Ran for 10000 ns
+OSS : 49613 : Dispatching at time 0.244243
+OSS : 49613 : Terminating and removing from queue at time 0.244354
+OSS : 49614 : Adding new process to high priority queue at 0.244531
+OSS : Time taken to generate process : 177 ns
+OSS : 49614 : Dispatching at time 0.245283
+OSS : 49614 : Ran for 5000 ns
+OSS : 49614 : Dispatching at time 0.250933
+OSS : 49614 : Terminating and removing from queue at time 0.251185
+OSS : 49615 : Adding new process to low priority queue at 0.251415
+OSS : Time taken to generate process : 230 ns
+OSS : 49615 : Dispatching at time 0.251745
+OSS : 49615 : Ran for 10000 ns
+OSS : 49615 : Dispatching at time 0.261994
+OSS : 49615 : Terminating and removing from queue at time 0.262974
+OSS : 49616 : Adding new process to low priority queue at 0.263260
+OSS : Time taken to generate process : 286 ns
+OSS : 49616 : Dispatching at time 0.263510
+OSS : 49616 : Ran for 10000 ns
+OSS : 49616 : Dispatching at time 0.273523
+OSS : 49616 : Terminating and removing from queue at time 0.273839
+OSS : 49617 : Adding new process to low priority queue at 0.274817
+OSS : Time taken to generate process : 978 ns
+OSS : 49617 : Dispatching at time 0.275098
+OSS : 49617 : Ran for 10000 ns
+OSS : 49617 : Dispatching at time 0.285298
+OSS : 49617 : Terminating and removing from queue at time 0.286200
+OSS : 49618 : Adding new process to low priority queue at 0.287178
+OSS : Time taken to generate process : 978 ns
+OSS : 49618 : Dispatching at time 0.287776
+OSS : 49618 : Ran for 10000 ns
+OSS : 49618 : Dispatching at time 0.298425
+OSS : 49618 : Terminating and removing from queue at time 0.298765
+OSS : 49619 : Adding new process to high priority queue at 0.299576
+OSS : Time taken to generate process : 811 ns
+OSS : 49619 : Dispatching at time 0.300572
+OSS : 49619 : Ran for 5000 ns
+OSS : 49619 : Dispatching at time 0.306532
+OSS : 49619 : Terminating and removing from queue at time 0.307348
+OSS : 49620 : Adding new process to low priority queue at 0.308244
+OSS : Time taken to generate process : 896 ns
+OSS : 49620 : Dispatching at time 0.308305
+OSS : 49620 : Ran for 10000 ns
+OSS : 49620 : Dispatching at time 0.318836
+OSS : 49620 : Terminating and removing from queue at time 0.319367
+OSS : 49621 : Adding new process to high priority queue at 0.319837
+OSS : Time taken to generate process : 470 ns
+OSS : 49621 : Dispatching at time 0.320315
+OSS : 49621 : Ran for 5000 ns
+OSS : 49621 : Dispatching at time 0.325641
+OSS : 49621 : Terminating and removing from queue at time 0.326029
+
+OSS :: System Ending ::
+
+OSS : System Statistics
+Total Usage time: 326029 ns
+Total Idle time: 389403447572 ns
+Total Wait time: 326029 ns
+Average Usage time: 18112 ns
+Average Idle time: 21633524865 ns
+Average Wait time: 18112 ns

@@ -1,30 +1,39 @@
+/*
+Programmer: Briton A. Powe          Program Homework Assignment #4
+Date: 10/25/18                      Class: Operating Systems
+File: queue.c
+------------------------------------------------------------------------
+Program Description:
+These are the function definition for queue operations declared in the
+header file called oss_struct.h. The main file, oss.c uses queues to
+organize and schedule proccess.
+*/
+
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <limits.h> 
 #include "oss_struct.h"
 
-// function to create a queue of given capacity.  
-// It initializes size of queue as 0 
+// Function to create a queue of given capacity.  
 queue* createQueue(unsigned capacity) 
 { 
     struct queue* newQueue = (queue*) malloc(sizeof(queue)); 
     newQueue->capacity = capacity; 
     newQueue->front = newQueue->size = 0;  
-    newQueue->rear = capacity - 1;  // This is important, see the enqueue 
+    newQueue->rear = capacity - 1;
     newQueue->array = (processBlock*) malloc(newQueue->capacity * sizeof(struct processBlock)); 
     return newQueue; 
 } 
 
-// Queue is full when size becomes equal to the capacity  
+//Queue is full when size becomes equal to the capacity.  
 int isFull(queue* currentQueue) 
 {  return (currentQueue->size == currentQueue->capacity);  } 
 
-// Queue is empty when size is 0 
+//Queue is empty when size is 0. 
 int isEmpty(queue* currentQueue) 
 {  return (currentQueue->size == 0); } 
 
-// Function to add an item to the queue.   
-// It changes rear and size 
+//Function to add an item to the queue.   
 void enqueue(queue* currentQueue, processBlock item){ 
     if (isFull(currentQueue)) 
         return; 
@@ -33,8 +42,7 @@ void enqueue(queue* currentQueue, processBlock item){
     currentQueue->size = currentQueue->size + 1; 
 } 
 
-// Function to remove an item from queue.  
-// It changes front and size 
+//Function to remove an item from queue.   
 processBlock* dequeue(queue* currentQueue) 
 { 
     processBlock* empty = NULL;
@@ -46,7 +54,7 @@ processBlock* dequeue(queue* currentQueue)
     return item; 
 } 
 
-// Function to get front of queue 
+//Function to get front of queue.
 processBlock* front(queue* currentQueue) 
 { 
     processBlock* empty = NULL;
