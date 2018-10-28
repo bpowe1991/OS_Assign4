@@ -52,14 +52,14 @@ int main(int argc, char *argv[]){
     }
 
     //Accessing semaphore.
-    if ((mutex = sem_open ("ossSemTesting2", 1)) == NULL){
+    if ((mutex = sem_open ("ossScheduleSem", 1)) == NULL){
         perror(strcat(argv[0],": Error: Failed semaphore creation"));
         exit(-1);    
     } 
 
     //Entering child critical section and assigning the option.
     do {
-        while(clockptr->currentlyRunning != getpid() && clockptr->readyFlag == 0);
+        while(clockptr->currentlyRunning != getpid() || clockptr->readyFlag == 0);
         if (clockptr->readyFlag == 1){
             clockptr->childOption = (rand() % (100)) + 1;
             sem_post(mutex);

@@ -148,7 +148,7 @@ int main(int argc, char *argv[]){
     }
 
     //Creating or opening semaphore
-    if ((mutex = sem_open ("ossSemTesting2", O_CREAT, 0644, 0)) == NULL){
+    if ((mutex = sem_open ("ossScheduleSem", O_CREAT, 0644, 0)) == NULL){
         perror(strcat(argv[0],": Error: Failed semaphore creation"));
 
         exit(-1);    
@@ -436,7 +436,7 @@ int main(int argc, char *argv[]){
 
     //Disconnecting and removing semaphore.
     sem_close(mutex);
-    sem_unlink ("ossSem");   
+    sem_unlink ("ossScheduleSem");   
     fclose(logPtr);
         
     return 0;
